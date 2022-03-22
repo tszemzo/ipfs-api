@@ -7,7 +7,7 @@ const verifyToken = require('../middlewares/auth');
 routes.post('/signup', signUp);
 routes.post('/signin', signIn);
 
-// routes.get('/keys', [verifyToken]. getApiKeys)
+routes.get('/keys', [verifyToken], getApiKeys)
 routes.post('/key', [verifyToken], createApiKey);
 routes.post('/key/disable', [verifyToken], disableApiKey);
 
@@ -34,7 +34,7 @@ async function signIn(req, res) {
 async function createApiKey(req, res) {
   try {
     const { userId } = req;
-    const response = await apiKeyController.create(userId);
+    const response = await apiKeyController.createKey(userId);
     res.status(201).send(response);
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -44,7 +44,16 @@ async function createApiKey(req, res) {
 async function disableApiKey(req, res) {
   try {
     const { id } = req.body;
-    const response = await apiKeyController.disable(id);
+    const response = await apiKeyController.disableKey(id);
+    res.status(200).send(response);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+}
+
+async function getApiKeys(req, res) {
+  try {
+    const response = await apiKeyController.getKeys();
     res.status(200).send(response);
   } catch (err) {
     res.status(500).send({ message: err.message });

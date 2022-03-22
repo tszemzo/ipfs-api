@@ -2,7 +2,7 @@ const uuidAPIKey = require('uuid-apikey');
 
 const { ApiKey } = require('../models/apiKey');
 
-async function create(createdBy) {
+async function createKey(createdBy) {
   const { apiKey } = uuidAPIKey.create();
   const key = new ApiKey({
     id: apiKey,
@@ -14,7 +14,7 @@ async function create(createdBy) {
   return key;
 }
 
-async function disable(id) {
+async function disableKey(id) {
   const existingKey = await ApiKey.findOne({ id });
   if (!existingKey) {
     throw new Error(`Key "${id}" is invalid`);
@@ -24,9 +24,16 @@ async function disable(id) {
   return existingKey;
 }
 
+async function getKeys() {
+  const apiKeys = await ApiKey.find(); // Add an ApiKeyLogs an include it here on this get
+  // format if necessary
+  return apiKeys;
+}
+
 const self = {
-  create,
-  disable
+  createKey,
+  disableKey,
+  getKeys
 };
 
 module.exports = self;
