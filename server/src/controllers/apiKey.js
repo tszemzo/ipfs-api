@@ -1,4 +1,5 @@
 const uuidAPIKey = require('uuid-apikey');
+const logger = require('../logger');
 
 const { ApiKey } = require('../models/apiKey');
 
@@ -10,7 +11,7 @@ async function createKey(createdBy) {
     createdBy
   });
   await key.save();
-  console.log(`ApiKey ${apiKey} created successfully`);
+  logger.info(`ApiKey ${apiKey} created successfully`);
   return key;
 }
 
@@ -21,13 +22,25 @@ async function disableKey(id) {
   }
   existingKey.set({ disabled: true });
   await existingKey.save();
+  logger.info(`ApiKey ${id} disabled successfully`);
   return existingKey;
 }
 
-async function getKeys() {
-  const apiKeys = await ApiKey.find(); // Add an ApiKeyLogs an include it here on this get
-  // format if necessary
-  return apiKeys;
+async function getKeys(includeLogs = true) {
+  if (includeLogs) {
+    const apiKeys = ApiKey.aggregate([{
+      // Include logs to our Api Keys
+      $lookup: {
+        from: "ApiKeyLogs",
+        localField: "id",
+        foreignField: "apiKeyId",
+        as: "logs"
+      }
+    }]);
+    return apiKeys;
+  } else {
+    return ApiKey.find();
+  }
 }
 
 const self = {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const config = require('./config');
 const app = require('./app');
+const config = require('./config');
+const logger = require('./logger');
 
 const start = async () => {
   if (!config.JWT_KEY) {
@@ -16,13 +17,13 @@ const start = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('Connected to MongoDB');
+    logger.info('Connected to MongoDB');
   } catch (err) {
-    console.error(err);
+    logger.error(err);
   }
 
   app.listen(config.PORT, () => {
-    console.log(`IPFS server listening on port ${config.PORT}`);
+    logger.info(`IPFS server listening on port ${config.PORT}`);
   });
 }
 

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const logger = require('../logger');
 
 const { User } = require('../models/user');
 const { JWT_KEY } = require('../config');
@@ -25,6 +26,7 @@ const signUp = async ({ email, password }) => {
     password: bcrypt.hashSync(password, 8)
   });
   await user.save();
+  logger.info(`User ${email} created successfully`);
   return {
     id: user._id,
     email: user.email,
