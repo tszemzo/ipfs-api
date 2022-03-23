@@ -26,18 +26,9 @@ async function disableKey(id) {
   return existingKey;
 }
 
-async function getKeys(includeLogs = true) {
-  if (includeLogs) {
-    const apiKeys = ApiKey.aggregate([{
-      // Include logs to our Api Keys
-      $lookup: {
-        from: "ApiKeyLogs",
-        localField: "id",
-        foreignField: "apiKeyId",
-        as: "logs"
-      }
-    }]);
-    return apiKeys;
+async function getKeys(includeRequests = true) {
+  if (includeRequests) {
+    return ApiKey.find().populate('requests');
   } else {
     return ApiKey.find();
   }

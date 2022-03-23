@@ -14,7 +14,13 @@ const apiKeySchema = new mongoose.Schema({
   },
   createdBy: {
     type: String,
-  }
+  },
+  requests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Request'
+    }
+  ]
 });
 
 const ApiKey = mongoose.model(

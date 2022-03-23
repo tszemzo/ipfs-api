@@ -48,7 +48,7 @@ const signIn = async ({ email, password }) => {
 
   const passwordsMatch = bcrypt.compareSync(password, existingUser.password);
   if (!passwordsMatch) {
-    throw new Error('Invalid credentials');
+    throw new Error('Incorrect password');
   }
 
   const token = jwt.sign({ id: existingUser.id }, JWT_KEY, {
