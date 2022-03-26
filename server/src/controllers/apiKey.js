@@ -26,12 +26,8 @@ async function disableKey(id) {
   return existingKey;
 }
 
-async function getKeys(includeRequests = true) {
-  if (includeRequests) {
-    return ApiKey.find().populate('requests');
-  } else {
-    return ApiKey.find();
-  }
+async function getKeys() {
+  return ApiKey.find();
 }
 
 const self = {

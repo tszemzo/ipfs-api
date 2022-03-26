@@ -20,9 +20,10 @@ async function validateApiKey(req, res, next) {
     }
 
     if (existingKey.disabled) {
-      throw new Error(`Key ${existingKey} is disabled`);
+      throw new Error(`Key ${apiKey} is disabled`);
     }
 
+    // Saving it temporarily to use it later on the proxy req handler below
     res.locals.apiKey = existingKey;
     next();
   } catch (err) {
