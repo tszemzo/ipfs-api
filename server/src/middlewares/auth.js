@@ -3,7 +3,12 @@ const { JWT_KEY } = require("../config");
 const { User } = require('../models/user');
 
 const verifyToken = async (req, res, next) => {
-  const token = req.headers["x-access-token"];
+  const bearerToken = req.headers.authorization;
+  if (!bearerToken) {
+    return res.status(403).send({ message: "No authorization provided!" });
+  }
+  
+  const token = bearerToken.split(' ')[1]; // e.g: Bearer XXX-TOKEN-XXX
   if (!token) {
     return res.status(403).send({ message: "No token provided!" });
   }

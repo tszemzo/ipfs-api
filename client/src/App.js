@@ -1,24 +1,59 @@
-import logo from './logo.svg';
+import React from 'react'; 
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import TopBar from "./components/TopBar"
+import Login from './routes/Login';
+// import Signup from 'containers/Signup';
+import Dashboard from './routes/Dashboard';
+import useToken from './utils';
+
 import './App.css';
 
-function App() {
+const App = () => {
+  const { token, setToken } = useToken();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <TopBar />
+      <div className='main'>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                !!token 
+                  ? <Dashboard />
+                  : <Login setToken={setToken} />
+              }
+            />
+            <Route 
+              path="/login" 
+              element={
+                !!token
+                  ? <Dashboard />
+                  : <Login setToken={setToken} />
+              }
+            />
+            {/* <Route 
+              path="/signup" 
+              element={<Signup />} 
+            /> */}
+            <Route
+              path="/dashboard"
+              element={
+                !!token 
+                  ? <Dashboard /> 
+                  : <Login setToken={setToken} />
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </>
   );
 }
 
