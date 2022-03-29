@@ -1,13 +1,13 @@
 # Fleek IPFS API
 
 This challenge includes the following modules:
-- [API Server](./server/README.md)
-- [Proxy Server](./proxy/README.md)
+- [API Server](./server)
+- [Proxy Server](./proxy)
 - [Client](./client/README.md)
 
 ## Getting started
 
-There are a few things that you need in order to setup the projet.
+There are a few things that you need in order to setup the project:
 
 ### Pre-requisites
 
@@ -45,6 +45,9 @@ ipfs daemon
 ```
 
 Finally we need to run the three modules. First run `npm start` on ./proxy and ./server. And finally, run `npm start` on ./client.
+
+## Resources
+- [https://www.getpostman.com/collections/c2136eccce8d1186420b](Postman collection to test the API and the Proxy)
 
 ## Written questions
 ### How would you improve this assignment for a production ready solution (e.g., security,deployment)?
