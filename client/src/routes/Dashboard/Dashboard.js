@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 
+import ErrorBar from '../../components/ErrorBar';
 import { getKeys, disableKey, createKey } from '../../services/apiKey';
 import CollapsibleTable from './Table';
 
@@ -20,7 +20,7 @@ export default class Dashboard extends Component  {
 
   componentDidMount() {
     getKeys()
-      .then(keys => {
+      .then(({ data: keys }) => {
         this.setState({ keys, loading: false });
       })
       .catch(error => {
@@ -28,24 +28,46 @@ export default class Dashboard extends Component  {
       });  
   }
   
-  disableApiKey = ev => {
-    // Add disable button in the table
+  disableApiKey = async (id) => {
+    try {
+      const keys = [...this.state.keys];
+      const { data: disabledKey } = await disableKey(id);
+      const index = keys.findIndex((key) => key.id === id)
+      keys[index] = disabledKey;
+      this.setState({ keys });
+    } catch (err) {
+      const errorMsg = err.response
+        ? err.response.data.message
+        : err.message;
+      this.setState({ error: errorMsg })
+    }    
   }
 
   createApiKey = async () => {
-    const newKey = await createKey();
-    const updatedKeys = [newKey, ...this.state.keys];
-    this.setState({ keys: updatedKeys });
+    try {
+      const { data } = await createKey();
+      const updatedKeys = [data, ...this.state.keys];
+      this.setState({ keys: updatedKeys });
+    } catch (err) {
+      const errorMsg = err.response
+        ? err.response.data.message
+        : err.message;
+      this.setState({ error: errorMsg })
+    }
   };
 
   render() {
     const { error, loading, keys } = this.state;
-    if (error) {
-      return <Alert severity="error">Error: {error.message || error}!</Alert>;
-    };
-    
     return (
       <div className="dashboard-container">
+        {error && (
+          <ErrorBar 
+            open={!!error}
+            handleClose={() => this.setState({ error: null })}
+            message={error}
+          />
+        )}
+
         <div className="button-container">
           <Button variant="contained" onClick={this.createApiKey}>
             Create API key
@@ -54,7 +76,10 @@ export default class Dashboard extends Component  {
         {
           loading
             ? <CircularProgress />
-            : <CollapsibleTable rows={keys}/>
+            : <CollapsibleTable 
+                rows={keys}
+                disableKey={this.disableApiKey}
+              />
         }        
       </div>
     );

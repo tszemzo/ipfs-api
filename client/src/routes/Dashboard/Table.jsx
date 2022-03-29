@@ -10,12 +10,19 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 function Row(props) {
-  const { row } = props;
+  const { row, disableKey } = props;
   const [open, setOpen] = React.useState(false);
+
+  const renderDisableButton = (id) => (
+    <Button variant="contained" onClick={() => disableKey(id)}>
+      Disable
+    </Button>
+  );
 
   return (
     <React.Fragment>
@@ -30,15 +37,16 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">{row.id}</TableCell>
-        <TableCell align="right">{row.disabled}</TableCell>
+        <TableCell align="right">{row.disabled ? 'Yes' : 'No'}</TableCell>
         <TableCell align="right">{row.created}</TableCell>
         <TableCell align="right">{row.createdBy}</TableCell>
+        <TableCell align="right">{row.disabled ? null : renderDisableButton(row.id)}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
+              <Typography variant="subtitle1" gutterBottom component="div">
                 Requests ({row.requests.length || 0 })
               </Typography>
               <Table size="small" aria-label="request-ids">
@@ -58,7 +66,7 @@ function Row(props) {
   );
 }
 
-export default function CollapsibleTable({ rows }) {
+export default function CollapsibleTable({ rows, disableKey }) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -69,11 +77,12 @@ export default function CollapsibleTable({ rows }) {
             <TableCell align="right">Disabled</TableCell>
             <TableCell align="right">Created</TableCell>
             <TableCell align="right">Created By</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.id} row={row} />
+            <Row key={row.id} row={row} disableKey={disableKey} />
           ))}
         </TableBody>
       </Table>

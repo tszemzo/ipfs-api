@@ -5,37 +5,20 @@ const includeToken = () => {
   return !!token ? { Authorization: `Bearer ${token}` } : null;
 };
 
-export async function createKey() {
-  try {
-    const response = await api.post('/key', {}, { 
-      headers: includeToken()
-    });
-    return response.data;
-  } catch(err) {
-    console.error(err);
-  };
+export function createKey() {
+  return api.post('/key', {}, { 
+    headers: includeToken()
+  });
 };
 
-export async function disableKey(id) {
-  try {
-    const response = await api.post('/key/disable', {
-      id
-    }, { 
-      headers: includeToken()
-    });
-    return response.data;
-  } catch(err) {
-    console.error(err);
-  };
+export function disableKey(id) {
+  return api.post('/key/disable', { id }, { 
+    headers: includeToken()
+  });
 };
 
-export async function getKeys() {
-  try {
-    const response = await api.get('/key/all', { 
-      headers: includeToken()
-    });
-    return response.data;
-  } catch(err) {
-    console.error(err);
-  };
+export function getKeys() {
+  return api.get('/key/all', { 
+    headers: includeToken()
+  });
 };
