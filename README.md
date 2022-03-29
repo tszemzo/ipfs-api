@@ -47,7 +47,7 @@ ipfs daemon
 Finally we need to run the three modules. First run `npm start` on ./proxy and ./server. And finally, run `npm start` on ./client.
 
 ## Resources
-- [https://www.getpostman.com/collections/c2136eccce8d1186420b](Postman collection to test the API and the Proxy)
+- A [Postman Collection Link](https://www.getpostman.com/collections/c2136eccce8d1186420b) to test the API and Proxy if needed]
 
 ## Written questions
 ### How would you improve this assignment for a production ready solution (e.g., security,deployment)?
