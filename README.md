@@ -47,7 +47,7 @@ ipfs daemon
 Finally we need to run the three modules. First run `npm start` on ./proxy and ./server. And finally, run `npm start` on ./client.
 
 ## Resources
-- A [Postman Collection Link](https://www.getpostman.com/collections/c2136eccce8d1186420b) to test the API and Proxy if needed]
+- A [Postman Collection Link](https://www.getpostman.com/collections/c2136eccce8d1186420b) to test the API and Proxy if needed.
 
 ## Written questions
 ### How would you improve this assignment for a production ready solution (e.g., security,deployment)?
@@ -60,7 +60,6 @@ There are a few improvements that I'd add to this solution:
 - Dockerize each module making it easier for deployment.
 - Add tests, specially in our server module.
 
-...
 ### Describe IPFS and compare it to other protocols e.g., HTTP?
 
 IPFS is a distributed system for storing and accessing files, websites, applications, and data. The key feature of IPFS is that it offers a peer to peer distributed file system and there is **no centralized server**. That being said, when using IPFS when requesting for a webpage, for example, you're not asking the response to a single distance-depending computer around the world, but to a descentralized network of computers to share the page with you.
