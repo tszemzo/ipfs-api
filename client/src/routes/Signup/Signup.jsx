@@ -1,47 +1,52 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+
 import Typography from '@mui/material/Typography';
 
 import ErrorBar from '../../components/ErrorBar';
-import { login } from '../../services/user';
+import { signup } from '../../services/user';
+import './Signup.css';
 
-import './Login.css';
-
-export default function Login({ setToken }) {
+const SignUp = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState(null);
-  
-  const handleSubmit = async e => {
+
+  const validEmail = () => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email.toLowerCase());
+  };
+
+  const validFields = () => validEmail() && !!password && password === passwordConfirmation;
+
+  const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const { data } = await login({ email, password });
-      setToken(data.accessToken);
+      if(!validFields) return;
+      await signup({ email, password });
+      navigate('/login');
     } catch (err) {
       const errorMsg = err.response
         ? err.response.data.message // Axios weird err response
         : err.message;
       setError(errorMsg);
     }
-  };
-
-  const handleClose = () => {
-    setError(null);
-  };
+  }
 
   return (
     <div className="form">
       {error && (
         <ErrorBar 
           open={!!error}
-          handleClose={handleClose}
+          handleClose={() => setError(null)}
           message={error}
         />
       )}
-
       <div className="title">
         <Typography variant="h3" component="div">
-          Login
+          Signup
         </Typography>
       </div>
       <form onSubmit={handleSubmit}>
@@ -53,13 +58,19 @@ export default function Login({ setToken }) {
           <label>Password</label>
           <input type="password" name="pass" onChange={e => setPassword(e.target.value)} required />
         </div>
+        <div className="input-container">
+          <label>Confirm Password</label>
+          <input type="password" name="pass2" onChange={e => setPasswordConfirmation(e.target.value)} required />
+        </div>
         <div className="button-container">
           <input type="submit" />
         </div>
       </form>
       <div>
-        Don't have an account? Sign up <Link to='/signup'>here.</Link>
+        Already have an account? Log in <Link to='/login'>here.</Link>
       </div>
     </div>
-  )
+  );
 }
+
+export default SignUp;

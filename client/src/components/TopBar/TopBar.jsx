@@ -7,7 +7,6 @@ const TopBar = () => {
   return (
     <div className='container'>
       <span>Fleek Proxy API</span>
-      <div>Sign out</div>
     </div>
   );
 };

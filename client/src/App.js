@@ -4,9 +4,9 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import TopBar from "./components/TopBar"
+import TopBar from './components/TopBar';
 import Login from './routes/Login';
-// import Signup from 'containers/Signup';
+import Signup from './routes/Signup';
 import Dashboard from './routes/Dashboard';
 import useToken from './utils';
 
@@ -38,10 +38,14 @@ const App = () => {
                   : <Login setToken={setToken} />
               }
             />
-            {/* <Route 
+            <Route 
               path="/signup" 
-              element={<Signup />} 
-            /> */}
+              element={
+                !!token
+                  ? <Dashboard />
+                  : <Signup />
+              } 
+            />
             <Route
               path="/dashboard"
               element={
