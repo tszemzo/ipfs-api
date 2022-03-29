@@ -12,7 +12,10 @@ There are a few things that you need in order to setup the project:
 ### Pre-requisites
 
 - **[IPFS Desktop](https://docs.ipfs.io/install/command-line/)** (required for running the local IPFS node)
-- **[Docker](https://www.docker.com/)**
+- **[Docker](https://www.docker.com/)** (required for running our mongo DB service)
+- **[NVM](https://github.com/nvm-sh/nvm)** (not mandatory, nvm allows you to quickly install and use different versions of node via the command line)
+
+* If you aren't using NVM, be sure to have a version of Node higher than +12.
 
 After we've got the above installed, you should follow a few steps:
 
